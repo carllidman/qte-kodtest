@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 
+import { addAnswer, AnswerData } from '../Answer/answerSlice';
 import { Comment } from '../Comment/Comment';
 import { 
     CommentState, 
@@ -28,6 +29,20 @@ export function CommentContainer() {
             answers: []
         }));
     }
+
+    useEffect(() => {
+        fetch("http://127.0.0.1:3000/api/get_data")
+        .then(response => response.json())
+        .then(data => {
+            data.comments.forEach((comment: CommentData) => {
+                dispatch(addComment(comment))
+            })
+            data.answers.forEach((answer: AnswerData) => {
+                dispatch(addAnswer(answer));
+            });
+        });
+    }, 
+    []);
 
     return (
         <div className={styles.commentContainer}>

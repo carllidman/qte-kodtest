@@ -11,13 +11,15 @@ import {
 import {
     selectAnswersByParent,
     AnswerData,
-    addAnswer
+    addAnswer,
+    selectAnswers
 } from "../Answer/answerSlice"
 import styles from "./Comment.module.css"
 
 export function Comment(props: Dictionary<any>) {
     const data = useAppSelector((state) => selectCommentById(state, props.id));
     const answers = useAppSelector((state) => selectAnswersByParent(state, props.id));
+    const allAnswers = useAppSelector((state) => selectAnswers(state));
     const dispatch = useAppDispatch();
 
     function likeComment() {
@@ -32,7 +34,7 @@ export function Comment(props: Dictionary<any>) {
         (document.getElementById("answerText" + props.id) as HTMLInputElement).value = "";
 
         dispatch(addAnswer({
-            id: answers.length,
+            id: allAnswers.length,
             author,
             text,
             likes: 0,

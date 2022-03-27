@@ -40,4 +40,8 @@ export const selectAnswerById = (state: RootState, id: number) => {
     return state.answer.answers.find((answer: AnswerData) => answer.id === id);
 }
 
+export const selectAnswers = (state: RootState) => {
+    return state.answer.answers;
+}
+
 export default answerSlice.reducer
