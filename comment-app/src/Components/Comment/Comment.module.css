@@ -1,0 +1,13 @@
+.comment {
+    background-color: rgb(219, 213, 255);
+    padding-top: 5px;
+    outline: none;
+    border: 2px solid rgb(160, 160, 160);
+    margin-top: 5px;
+}
+
+.answerBox {
+    background-color: beige;
+    padding: 2px;
+    border: 2px solid black;
+}
