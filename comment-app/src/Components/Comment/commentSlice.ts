@@ -8,8 +8,7 @@ export interface CommentData {
     id: number,
     author: string,
     text: string,
-    likes: number,
-    answers: Array<AnswerState>
+    likes: number
 }
 
 

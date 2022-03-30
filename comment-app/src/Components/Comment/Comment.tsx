@@ -25,6 +25,18 @@ export function Comment(props: Dictionary<any>) {
     function likeComment() {
         dispatch(addLike(props.id));
         (document.getElementById("likeButton" + props.id) as HTMLInputElement).disabled = true;
+
+        fetch("http://127.0.0.1:3000/api/like_comment", {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({id: props.id})
+        })
+        .catch((error) => {
+            console.error(error);
+        });
     }
 
     function createAnswer() {
@@ -33,13 +45,27 @@ export function Comment(props: Dictionary<any>) {
 
         (document.getElementById("answerText" + props.id) as HTMLInputElement).value = "";
 
-        dispatch(addAnswer({
+        let answer = {
             id: allAnswers.length,
             author,
             text,
             likes: 0,
             parent: props.id
-        }))
+        }
+
+        dispatch(addAnswer(answer))
+
+        fetch("http://127.0.0.1:3000/api/add_answer", {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(answer)
+        })
+        .catch((error) => {
+            console.error(error);
+        });
     }
 
     return (

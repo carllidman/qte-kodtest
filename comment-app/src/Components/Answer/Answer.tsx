@@ -15,6 +15,18 @@ export function Answer(props: Dictionary<any>) {
     function likeAnswer() {
         dispatch(addLike(props.id));
         (document.getElementById("likeAnswerButton" + props.id) as HTMLInputElement).disabled = true;
+
+        fetch("http://127.0.0.1:3000/api/like_answer", {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({id: props.id})
+        })
+        .catch((error) => {
+            console.error(error);
+        });
     }
 
     return(

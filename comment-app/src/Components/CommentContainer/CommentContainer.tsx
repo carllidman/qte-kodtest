@@ -21,28 +21,44 @@ export function CommentContainer() {
 
         (document.getElementById("textInput") as HTMLInputElement).value = "";
         
-        dispatch(addComment({
+        let comment = {
             id: comments.length,
             author: author,
             text: text,
             likes: 0,
-            answers: []
-        }));
+        }
+
+        dispatch(addComment(comment));
+
+        fetch("http://127.0.0.1:3000/api/add_comment", {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(comment)
+        })
+        .catch((error) => {
+            console.error(error);
+        });
     }
 
     useEffect(() => {
         fetch("http://127.0.0.1:3000/api/get_data")
         .then(response => response.json())
         .then(data => {
-            data.comments.forEach((comment: CommentData) => {
-                dispatch(addComment(comment))
-            })
-            data.answers.forEach((answer: AnswerData) => {
-                dispatch(addAnswer(answer));
-            });
+            if (Array.isArray(data.comments)) {
+                data.comments.forEach((comment: CommentData) => {
+                    dispatch(addComment(comment))
+                });
+            }
+            if (Array.isArray(data.answers)) {
+                data.answers.forEach((answer: AnswerData) => {
+                    dispatch(addAnswer(answer));
+                });
+            }
         });
-    }, 
-    []);
+    }, []);
 
     return (
         <div className={styles.commentContainer}>
@@ -53,6 +69,7 @@ export function CommentContainer() {
                 })
             }
             <div>
+                <label>Write a new comment</label><br />
                 <label>Author:</label><br />
                 <input type="text" id="authorInput"></input><br />
                 <label>Comment text:</label><br />
